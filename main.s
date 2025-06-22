@@ -5,7 +5,18 @@ main:
   add  x1,x0,x0
   addi x2, x2, 5
   addi x1, x2, 5
+  li   t0, 0x1802 # interrupt enable and previous privilege mode as m-mode
+  csrs mstatus, t0
+  li   t0, 0x80   # timer interrupt enable
+  csrs mie, t0
+  la      t0, interrupt_handler #load interrupt handler address in mtvec
+  csrw    mtvec, t0 
+  li      t0, 500000
+  li      t1, 0x2004000
+  sw      t0, 0(t1)
   csrr t0, mcause
+
+interrupt_handler:
   addi a0, x0, 0x41
 	li a1, 0x10000000
 	sb a0, (a1) # 'a'
@@ -21,7 +32,11 @@ main:
   addi a0, x0, 0x45
 	li a1, 0x10000000
 	sb a0, (a1) # 'e'
+  addi a0, x0, 0x0A
+	li a1, 0x10000000
+	sb a0, (a1) # 'e'
 
-loop: j loop
+  mret
+
 
 
