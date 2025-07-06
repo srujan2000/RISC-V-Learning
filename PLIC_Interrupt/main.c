@@ -74,5 +74,5 @@ int main()
   plic_init(); // Initialize PLIC
   uart_init(); // Initialize UART
 
-  // write_to_uart();
+  write_to_uart();
 }
