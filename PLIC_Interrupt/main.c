@@ -1,10 +1,11 @@
 /* Registers Memory Map*/
 #define UART 0x10000000
-#define UART_IRQ 0x10
+#define UART_IRQ 10
 
 #define IER 1
 #define FCR 2
 #define LCR 3
+#define LSR 5
 
 #define HART_0 0
 
@@ -27,7 +28,7 @@ void uart_init(void)
   Reg(0x00) = 0x00; // MSB for baud rate of 38.4K.
   Reg(LCR)  = 0x03; // 8 bits, no parity, 1 stop bit
   Reg(FCR) = 0x07; // Enable FIFO, clear RX and TX FIFO
-  Reg(IER) = 0x03; // Enable RX interrupt
+  Reg(IER) = 0x02; // Enable TX interrupt
 }
 
 void plic_init(void)
@@ -45,34 +46,37 @@ void delay()
   for (i = 0; i < 100000; i++); // Simple delay loop
 }
 
-void write_to_uart(void)
-{
-  Reg(0x00) = 'H'; // Write 'H' to UART
-  delay();
-  Reg(0x00) = 'e'; // Write 'e' to UART
-  delay();
-  Reg(0x00) = 'l'; // Write 'l' to UART
-  delay();
-  Reg(0x00) = 'l'; // Write 'l' to UART
-  delay();
-  Reg(0x00) = 'o'; // Write 'o' to UART
-  delay();
-  Reg(0x00) = '\n'; // Write newline to UART
-  delay();
-}
+// void write_to_uart(void)
+// {
+//   Reg(0x00) = 'H'; // Write 'H' to UART
+//   delay();
+//   Reg(0x00) = 'e'; // Write 'e' to UART
+//   delay();
+//   Reg(0x00) = 'l'; // Write 'l' to UART
+//   delay();
+//   Reg(0x00) = 'l'; // Write 'l' to UART
+//   delay();
+//   Reg(0x00) = 'o'; // Write 'o' to UART
+//   delay();
+//   Reg(0x00) = '\n'; // Write newline to UART
+//   delay();
+// }
 
 void interrupt_handler(void)
 { 
   Plic_Claim_Id = *(unsigned int*)PLIC_CLAIM(HART_0); // Claim the interrupt
-  Reg(0x00) = 'I'; // Write 'H' to UART
-  Reg(0x00) = 'N'; // Write 'H' to UART
-  Reg(0x00) = 'T'; // Write 'H' to UART
+
+  if(Reg(LSR) & 0x01){
+    char char_received = Reg(0x00); // Read the character from UART
+    Reg(0x00) = char_received; // Print the character
+  }
 }
+
 
 int main()
 {
   plic_init(); // Initialize PLIC
   uart_init(); // Initialize UART
 
-  write_to_uart();
+  // write_to_uart();
 }
