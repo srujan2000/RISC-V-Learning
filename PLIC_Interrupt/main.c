@@ -28,7 +28,7 @@ void uart_init(void)
   Reg(0x00) = 0x00; // MSB for baud rate of 38.4K.
   Reg(LCR)  = 0x03; // 8 bits, no parity, 1 stop bit
   Reg(FCR) = 0x07; // Enable FIFO, clear RX and TX FIFO
-  Reg(IER) = 0x02; // Enable TX interrupt
+  Reg(IER) = 0x03; // Enable RX and TX interrupt
 }
 
 void plic_init(void)
