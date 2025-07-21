@@ -1,0 +1,84 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+RAM              0x80000000         0x00001000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /tmp/ccI7Oyln.o
+LOAD /tmp/ccWuO750.o
+
+.text           0x80000000      0x220
+ *(.text)
+ .text          0x80000000       0x38 /tmp/ccI7Oyln.o
+                0x80000000                start
+ .text          0x80000038      0x1e8 /tmp/ccWuO750.o
+                0x80000038                uart_init
+                0x800000b4                aplic_init
+                0x80000120                imsic_init
+                0x8000015c                delay
+                0x800001a0                interrupt_handler
+                0x800001ec                main
+
+.data           0x80000220        0x0
+ *(.data)
+ .data          0x80000220        0x0 /tmp/ccI7Oyln.o
+ .data          0x80000220        0x0 /tmp/ccWuO750.o
+OUTPUT(main.elf elf32-littleriscv)
+
+.bss            0x80000220        0x0
+ .bss           0x80000220        0x0 /tmp/ccI7Oyln.o
+ .bss           0x80000220        0x0 /tmp/ccWuO750.o
+
+.sbss           0x80000220        0x4
+ .sbss          0x80000220        0x4 /tmp/ccWuO750.o
+                0x80000220                Plic_Claim_Id
+
+.riscv.attributes
+                0x00000000       0x29
+ .riscv.attributes
+                0x00000000       0x27 /tmp/ccI7Oyln.o
+ .riscv.attributes
+                0x00000027       0x25 /tmp/ccWuO750.o
+
+.comment        0x00000000       0x22
+ .comment       0x00000000       0x22 /tmp/ccWuO750.o
+                                 0x23 (size before relaxing)
+
+.debug_line     0x00000000      0x25a
+ .debug_line    0x00000000       0x80 /tmp/ccI7Oyln.o
+ .debug_line    0x00000080      0x1da /tmp/ccWuO750.o
+
+.debug_line_str
+                0x00000000       0x3e
+ .debug_line_str
+                0x00000000       0x3e /tmp/ccI7Oyln.o
+                                 0x37 (size before relaxing)
+ .debug_line_str
+                0x0000003e       0x73 /tmp/ccWuO750.o
+
+.debug_info     0x00000000      0x10a
+ .debug_info    0x00000000       0x24 /tmp/ccI7Oyln.o
+ .debug_info    0x00000024       0xe6 /tmp/ccWuO750.o
+
+.debug_abbrev   0x00000000       0xeb
+ .debug_abbrev  0x00000000       0x14 /tmp/ccI7Oyln.o
+ .debug_abbrev  0x00000014       0xd7 /tmp/ccWuO750.o
+
+.debug_aranges  0x00000000       0x40
+ .debug_aranges
+                0x00000000       0x20 /tmp/ccI7Oyln.o
+ .debug_aranges
+                0x00000020       0x20 /tmp/ccWuO750.o
+
+.debug_str      0x00000000       0xf8
+ .debug_str     0x00000000       0xf8 /tmp/ccI7Oyln.o
+                                 0x43 (size before relaxing)
+ .debug_str     0x000000f8       0xb5 /tmp/ccWuO750.o
+
+.debug_frame    0x00000000       0xec
+ .debug_frame   0x00000000       0xec /tmp/ccWuO750.o
